@@ -86,6 +86,7 @@ exports.register = async (req, res) => {
             phone_number,
             address,
             no_ktp,
+            status: 'waiting_response',
             file: req.file.originalname,
         })
         res.statusCode = 201

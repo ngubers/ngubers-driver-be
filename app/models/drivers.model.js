@@ -7,6 +7,7 @@ module.exports = (mongoose) => {
             phone_number: String,
             address: String,
             no_ktp: String,
+            status: String,
             file: String,
         },
         {timestamps: true}
