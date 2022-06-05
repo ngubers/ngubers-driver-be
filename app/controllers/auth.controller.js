@@ -157,14 +157,18 @@ exports.login = async (req, res) => {
 
 exports.authorize = async (req, res, next) => {
     try {
-        const bearerToken = req.headers.authorization
-        const token = bearerToken.split("Bearer ")[1]
-        const tokenPayload = jwt.verify(
-            token,
-            process.env.JWT_SIGNATURE_KEY || "Ngubers"
-        )
-        req.driver = await driverService.find(tokenPayload.id)
-        next()
+        if (req.headers.key) {
+            next()
+        } else {
+            const bearerToken = req.headers.authorization
+            const token = bearerToken.split("Bearer ")[1]
+            const tokenPayload = jwt.verify(
+                token,
+                process.env.JWT_SIGNATURE_KEY || "Ngubers"
+            )
+            req.driver = await driverService.find(tokenPayload.id)
+            next()
+        }
     }
     catch(error) {
         console.log(error)
