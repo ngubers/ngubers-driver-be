@@ -1,17 +1,5 @@
+const axios = require('axios')
 const driverService = require('../services/drivers.service')
-
-function encryptPassword(password) {
-    return new Promise((resolve, rejected) => {
-        bcrypt.hash(password, salt, (err, encryptedPassword) => {
-            if (!!err) {
-                rejected(err)
-                return
-            }
-
-            resolve(encryptedPassword)
-        })
-    })
-}
 
 exports.list = async (req, res) => {
     try {
@@ -30,6 +18,51 @@ exports.list = async (req, res) => {
         res.json({
             status: "OK",
             data: driver
+        })
+    } catch(error) {
+        res.status(400).json({
+            status: "FAIL",
+            message: error.message
+        })
+    }
+}
+
+exports.getOrderList = async (req, res) => {
+    try {
+        
+        const response = await axios.get('http://localhost:3000/api/order',{
+            headers:{
+                key : "11"
+            }
+        })
+        const{data}=response
+        console.log(data);
+
+        res.json({
+            status: "OK",
+            data: data
+        })
+    } catch(error) {
+        res.status(400).json({
+            status: "FAIL",
+            message: error.message
+        })
+    }
+}
+exports.updateOrder = async (req, res) => {
+    try {
+        console.log(req.params.id)
+        const response = await axios.put(`http://localhost:3000/api/order/${req.params.id}`,{
+            headers:{
+                key : "11"
+            }
+        })
+        const{data}=response
+        console.log(data);
+
+        res.json({
+            status: "OK",
+            data: data
         })
     } catch(error) {
         res.status(400).json({

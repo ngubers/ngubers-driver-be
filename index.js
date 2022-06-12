@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 
 require('./app/routes/drivers.routes')(app)
 require('./app/routes/auth.routes')(app)
-
+require('./app/routes/orders.routes')(app)
 const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
