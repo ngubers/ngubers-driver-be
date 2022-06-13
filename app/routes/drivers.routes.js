@@ -3,8 +3,7 @@ module.exports = (app) => {
     const auth = require('../controllers/auth.controller')
     const router = require('express').Router()
     
-    router.get('/order', auth.authorize, users.getOrderList)
-    router.put('/order/:id', auth.authorize, users.updateOrder)
+    router.put('/update/:id',auth.authorize,users.accDriver)
     router.get('/', auth.authorize, users.list)
     router.post('/',  auth.authorize, users.create)
     router.get('/:id', auth.authorize, users.find)

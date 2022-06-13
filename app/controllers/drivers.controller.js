@@ -1,6 +1,6 @@
 const axios = require('axios')
 const driverService = require('../services/drivers.service')
-
+const accService = require('../services/accdriver.service')
 exports.list = async (req, res) => {
     try {
         const response = await driverService.list()
@@ -53,6 +53,9 @@ exports.updateOrder = async (req, res) => {
     try {
         console.log(req.params.id)
         const response = await axios.put(`http://localhost:3000/api/order/${req.params.id}`,{
+            driverId: req.body.driverId,
+            status:req.body.status
+        },{
             headers:{
                 key : "11"
             }
@@ -71,7 +74,36 @@ exports.updateOrder = async (req, res) => {
         })
     }
 }
+exports.accDriver = async (req, res) => {
+    const {driverId, status = "waiting_response"} = req.body
+    const {id} = req.params
+    try {
+        if (!driverId) {
+            res.statusCode = 400
+            res.json({
+                status: "FAIL",
+                message: "driver id harus diisi!"
+            })
 
+            return
+
+        }
+
+        await accService.update(id, {
+            driverId,
+            status
+        })
+
+        res.json({
+            status: "OK",
+            message: "Order berhasil di update!",
+        })
+    } catch(error) {
+        res.status(500).send({
+            message: error.message || "Some error while making an order"
+        })
+    }
+}
 exports.create = async (req, res) => {
     const {full_name, email, password, address} = req.body
     try {
